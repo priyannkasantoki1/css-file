@@ -1,0 +1,63 @@
+---
+- name: Install server
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: latest
+  loop:
+     "{{ pkgs }}"
+ 
+- name: Start service httpd
+  ansible.builtin.service:
+    name: "{{ web_svc }}"
+    state: started
+    enabled: true
+ 
+- name: Start service firewalld
+  ansible.builtin.service:
+    name: "{{ frw_svc }}"
+    state: Restarted
+    enabled: true
+ 
+- name: permission add trrafic in firewalld
+  ansible.posix.firewalld:
+    service: "{{ rule }}"
+    permanent: true
+    immediate: true
+    state: enabled
+ 
+- name: create a template
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: "{{ doc }}"
+  notify: Restart httpd---
+
+
+
+/apache/vars/main.yml
+---
+pkgs:
+  - httpd
+  - firewalld
+web_svc: httpd
+frw_svc: firewalld
+rule: http
+doc: /var/www/html/index.html
+...
+~                  
+
+
+/apache/template/index.html.j2
+welcome to {{ ansible_facts['fqdn'] }} on {{ ansible_facts['default_ipv4']['address'] }}
+
+
+
+/apache/handler/main.yml
+--
+- name: Restart httpd
+  ansible.builtin.service:
+    name: httpd
+    state: restarted
+    enabled: true
+...
+~         
+
