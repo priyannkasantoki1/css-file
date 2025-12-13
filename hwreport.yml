@@ -1,0 +1,41 @@
+---
+- name: hwreport
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Download hw report template
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/DarkHexSage/darkhexsagenotes/main/hwreport.txt
+        dest: /root/hwreport.txt
+
+    - name: Replace hostname
+      ansible.builtin.replace:
+        path: /root/hwreport.txt
+        regexp: '^HOSTNAME='
+        replace: 'HOSTNAME={{ ansible_hostname }}'
+
+    - name: Replace memory
+      ansible.builtin.replace:
+        path: /root/hwreport.txt
+        regexp: '^MEMORY='
+        replace: 'MEMORY={{ ansible_memtotal_mb }}'
+
+    - name: Replace BIOS vendor
+      ansible.builtin.replace:
+        path: /root/hwreport.txt
+        regexp: '^BIOS='
+        replace: 'BIOS={{ ansible_bios_vendor }}'
+
+    - name: Replace disk size vda
+      ansible.builtin.replace:
+        path: /root/hwreport.txt
+        regexp: '^DISK_SIZE_VDA='
+        replace: 'DISK_SIZE_VDA={{ ansible_devices.vda.size | default("NONE") }}'
+
+    - name: Replace disk size vdb
+      ansible.builtin.replace:
+        path: /root/hwreport.txt
+        regexp: '^DISK_SIZE_VDB='
+        replace: 'DISK_SIZE_VDB={{ ansible_devices.vdb.size | default("NONE") }}'
+...
