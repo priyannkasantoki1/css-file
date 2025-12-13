@@ -1,0 +1,6 @@
+---
+collections:
+  - name: https://ansible-materials1.s3.ap-south-1.amazonaws.com/ansible-posix-1.5.1+(2).tar.gz
+  - name: https://ansible-materials1.s3.ap-south-1.amazonaws.com/community-general-5.5.0.tar.gz 
+  - name: https://ansible-materials1.s3.ap-south-1.amazonaws.com/redhat-rhel_system_roles-1.19.3.tar.gz 
+...
