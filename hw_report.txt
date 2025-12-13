@@ -1,0 +1,40 @@
+---
+- name: Webcontent directory setup
+  hosts: dev
+  become: true
+
+  tasks:
+    - name: Ensure devops group exists
+      ansible.builtin.group:
+        name: devops
+        state: present
+
+    - name: Create /devweb directory
+      ansible.builtin.file:
+        path: /devweb
+        state: directory
+        group: devops
+        mode: '2775'    # rwxrwsr-x with SGID
+
+    - name: Set SELinux context for /devweb
+      ansible.builtin.sefcontext:
+        target: "/devweb(/.*)?"
+        setype: httpd_sys_content_t
+        state: present
+
+    - name: Apply SELinux context on /devweb
+      ansible.builtin.command: restorecon -Rv /devweb
+      args:
+        warn: false
+
+    - name: Create index.html with content
+      ansible.builtin.copy:
+        dest: /devweb/index.html
+        content: "Development\n"
+        mode: '0644'
+
+    - name: Create symlink from /devweb to /var/www/html/devweb
+      ansible.builtin.file:
+        src: /devweb
+        dest: /var/www/html/devweb
+        state: link
