@@ -1,0 +1,27 @@
+---
+- name: cretea a yum_reposirory
+  hosts: all
+  become: true
+ 
+  tasks:
+    - name: baseos configure
+      ansible.builtin.yum_repository:
+        name: BaseOS
+        description: EPEL YUM repo
+        file: ex294_repos
+        baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+        gpgcheck: yes
+        gpgkey:
+        enabled: yes
+        state: present
+ 
+    - name: AppStream configure
+      ansible.builtin.yum_repository:
+        name: AppStream
+        description: EPEL YUM repo
+        file: ex294_repos
+        baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+        gpgcheck: yes
+        gpgkey:
+        enabled: yes
+        state: present
