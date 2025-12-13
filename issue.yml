@@ -1,0 +1,25 @@
+---
+- name: repalce value in file /etc/issue
+  hosts: all
+  become: true
+ 
+  tasks:
+ 
+    - name: repalce value in dev group
+      ansible.builtin.copy:
+        content: 'Deveployment'
+        dest: /etc/issue
+      when: inventory_hostname in groups['dev']
+ 
+    - name: repalce value in test group
+      ansible.builtin.copy:
+        content: 'Test'
+        dest: /etc/issue
+      when: inventory_hostname in groups['test']
+ 
+    - name: replace value in prod group
+      ansible.builtin.copy:
+        content: 'Producation'
+        dest: /etc/issue
+      when: inventory_hostname in groups['prod']
+...
