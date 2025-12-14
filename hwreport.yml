@@ -1,41 +1,41 @@
----
+---      
 - name: hwreport
-  hosts: all
+  hosts: dev
   become: true
-
-  tasks:
+         
+  tasks: 
     - name: Download hw report template
       ansible.builtin.get_url:
-        url: https://raw.githubusercontent.com/DarkHexSage/darkhexsagenotes/main/hwreport.txt
+        url: https://ansible-materials1.s3.ap-south-1.amazonaws.com/hwreport.empty
         dest: /root/hwreport.txt
-
+         
     - name: Replace hostname
       ansible.builtin.replace:
         path: /root/hwreport.txt
-        regexp: '^HOSTNAME='
-        replace: 'HOSTNAME={{ ansible_hostname }}'
-
+        regexp: '^INVENTORY_HOSTNAME='
+        replace: 'INVENTORY_HOSTNAME={{ ansible_hostname }}'
+         
     - name: Replace memory
       ansible.builtin.replace:
         path: /root/hwreport.txt
-        regexp: '^MEMORY='
-        replace: 'MEMORY={{ ansible_memtotal_mb }}'
-
+        regexp: '^BIOS_VERSION='
+        replace: 'BIOS_VERSION={{ ansible_bios_version }}'
+         
     - name: Replace BIOS vendor
       ansible.builtin.replace:
         path: /root/hwreport.txt
-        regexp: '^BIOS='
-        replace: 'BIOS={{ ansible_bios_vendor }}'
-
+        regexp: '^TOTAL_MEMORY='
+        replace: 'TOTAL_MEMORY={{ ansible_memtotal_mb }}'
+         
     - name: Replace disk size vda
       ansible.builtin.replace:
         path: /root/hwreport.txt
-        regexp: '^DISK_SIZE_VDA='
-        replace: 'DISK_SIZE_VDA={{ ansible_devices.vda.size | default("NONE") }}'
-
+        regexp: '^VDA_SIZE='
+        replace: 'VDA_SIZE={{ ansible_devices.vda.size | default("NONE") }}'
+         
     - name: Replace disk size vdb
       ansible.builtin.replace:
         path: /root/hwreport.txt
-        regexp: '^DISK_SIZE_VDB='
-        replace: 'DISK_SIZE_VDB={{ ansible_devices.vdb.size | default("NONE") }}'
-...
+        regexp: '^VDB_SIZE='
+        replace: 'VDB_SIZE={{ ansible_devices.vdb.size | default("NONE") }}'
+...      
