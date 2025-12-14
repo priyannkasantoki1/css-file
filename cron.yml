@@ -1,0 +1,13 @@
+---
+- name: crontab
+  hosts: dev
+  become: true
+  tasks:
+  - name: Cronjob for logger
+    ansible.builtin.cron:
+      name: happy
+      user: ansible
+      minute: "*/2"
+      job: /usr/bin/logger "EX294 exam score is 270"
+      state: present
+...
