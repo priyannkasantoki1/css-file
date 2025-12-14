@@ -24,8 +24,6 @@
 
     - name: Apply SELinux context on /devweb
       ansible.builtin.command: restorecon -Rv /devweb
-      args:
-        warn: false
 
     - name: Create index.html with content
       ansible.builtin.copy:
