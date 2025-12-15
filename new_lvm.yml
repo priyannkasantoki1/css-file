@@ -19,6 +19,7 @@
             vg: research
             lv: data
             size: 1500m
+            state: present
 
       rescue:
 
@@ -31,6 +32,7 @@
             vg: research
             lv: data
             size: 800m
+            state: present
 
     - name: Format logical volume with ext4
       community.general.filesystem:
