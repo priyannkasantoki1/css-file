@@ -14,10 +14,10 @@
         path: /devweb
         state: directory
         group: devops
-        mode: '2775'    # rwxrwsr-x with SGID
+        mode: '2775'    
 
     - name: Set SELinux context for /devweb
-      ansible.builtin.sefcontext:
+      community.general.sefcontext:
         target: "/devweb(/.*)?"
         setype: httpd_sys_content_t
         state: present
