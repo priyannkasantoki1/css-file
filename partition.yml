@@ -1,0 +1,74 @@
+---
+- name: partision
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: disk vdd missing notice
+      ansible.builtin.debug:
+        msg: "this disk is not exist"
+      when: "'vdd' not in ansible_devices"
+    - name: create 1500m partition on nvm0n2 if >= 1.5 GB
+      community.general.parted:
+        device: /dev/nm0n2
+        number: 1
+        state: present
+        part_end: 1500MiB
+      when: "'nvme0n2' in ansible_devices and (ansible_devices['nvme0n2'].size | regex_replace('GB','') | float >= 1.5 )"
+
+    - name: create 800m partition on
+      community.general.parted:
+        device: /dev/nm0n2
+        number: 1
+        state: present
+        part_end: 800MiB
+      when: "'nvme0n2' in ansible_devices and (ansible_devices['nvme0n2'].size | regex_replace('GB','') | float < 1.5 )"
+ 
+    - name: create 1500m partition on nvm0n3 if >= 1.5 GB
+      community.general.parted:
+        device: /dev/nm0n3
+        number: 1
+        state: present
+        part_end: 1500MiB
+      when: "'nvme0n3' in ansible_devices and (ansible_devices['nvme0n3'].size | regex_replace('GB','') | float >= 1.5 )"
+ 
+    - name: create 800m partition on nvm0n3 if < 1.5 GB
+      community.general.parted:
+        device: /dev/nm0n3
+        number: 1
+        state: present
+        part_end: 800MiB
+      when: "'nvme0n3' in ansible_devices and (ansible_devices['nvme0n3'].size | regex_replace('GB','') | float < 1.5 )"
+ 
+    - name: Create a ext2 filesystem on nvme0n2
+      community.general.filesystem:
+        device: /dev/nvme0n2p1
+        fstype: ext4
+ 
+    - name: Create a ext2 filesystem on nvme0n2
+      community.general.filesystem:
+        device: /dev/nvme0n3p1
+        fstype: ext4
+ 
+    - name: create mount directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - /newpart
+        - /newpart1
+ 
+    - name: Mount nvme0n2p1
+      ansible.posix.mount:
+        path: /newpart
+        src: /dev/nvme0n2p1
+        fstype: ext4
+        state: mounted
+ 
+    - name: Mount nvme0n3p1
+      ansible.posix.mount:
+        path: /newpart1
+        src: /dev/nvme0n3p1
+        fstype: ext4
+        state: mounted
