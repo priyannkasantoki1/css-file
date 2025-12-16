@@ -15,7 +15,7 @@
 - name: Start service firewalld
   ansible.builtin.service:
     name: "{{ frw_svc }}"
-    state: Restarted
+    state: restarted
     enabled: true
  
 - name: permission add trrafic in firewalld
@@ -29,7 +29,7 @@
   ansible.builtin.template:
     src: index.html.j2
     dest: "{{ doc }}"
-  notify: Restart httpd---
+  notify: Restart httpd
 
 
 
