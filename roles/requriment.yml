@@ -1,7 +1,7 @@
 ---
-- src: https://ansible-materials1.s3.ap-south-1.amazonaws.com/balancer.tgz
-  name: balancer
- 
 - src: https://ansible-materials1.s3.ap-south-1.amazonaws.com/phpinfo.tgz
   name: phpinfo
+  
+- src: https://ansible-materials1.s3.ap-south-1.amazonaws.com/balancer.tgz
+  name: balancer
 ...
