@@ -1,0 +1,12 @@
+---
+- name: install role
+  hosts: all
+  become:
+
+  vars:i
+    selinux_state: enforcing
+    selinux_policy: targeted
+
+  roles:
+    - selinux
+...
