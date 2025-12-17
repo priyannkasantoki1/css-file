@@ -2,3 +2,9 @@
 {% for i in groups.all %}
 {{ hostvars[i].ansible_default_ipv4.address }} {{ hostvars[i].ansible_fqdn }} {{ hostvars[i].ansible_hostname }}
 {% endfor %}
+
+
+ansible all -m setup > ansible_facts.yml
+cat ansible_facts.yml | grep ipv4
+cat ansible_facts.yml | grep hostname
+cat ansible_facts.yml | grep fqdn
