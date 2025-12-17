@@ -4,13 +4,13 @@
   become: true
               
   roles:      
-    - role: phpinfo
+    - phpinfo
               
 - name: configure role phpinfo
   hosts: webservers
   become: true
               
   roles:      
-    - role: balancer
+    - balancer
 
 ...
