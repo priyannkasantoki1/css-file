@@ -2,7 +2,7 @@
 - name: Install server
   ansible.builtin.dnf:
     name: "{{ item }}"
-    state: latest
+    state: present
   loop:
      "{{ pkgs }}"
  
@@ -15,7 +15,7 @@
 - name: Start service firewalld
   ansible.builtin.service:
     name: "{{ frw_svc }}"
-    state: restarted
+    state: started
     enabled: true
  
 - name: permission add trrafic in firewalld
