@@ -4,11 +4,3 @@ collections:
   - name: https://ansible-materials1.s3.ap-south-1.amazonaws.com/community-general-5.5.0.tar.gz 
   - name: https://ansible-materials1.s3.ap-south-1.amazonaws.com/redhat-rhel_system_roles-1.19.3.tar.gz 
 ...
-
----
-collections:
-  - name: /home/student/role-collections/gls-utils-0.0.1.tar.gz
-  - name: /home/student/role-collections/redhat-insights-1.0.7.tar.gz
-  - name: /home/student/role-collections/redhat-rhel_system_roles-1.19.3.tar.gz
-  - name: /home/student/role-collections/community-general-5.5.0.tar.gz
-  ...
