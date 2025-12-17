@@ -1,7 +1,7 @@
 ---
 - name: install role
   hosts: all
-  become:
+  become: true
 
   vars:i
     selinux_state: enforcing
