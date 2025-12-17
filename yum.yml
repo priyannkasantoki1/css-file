@@ -8,20 +8,20 @@
       ansible.builtin.yum_repository:
         name: BaseOS
         description: EPEL YUM repo
-        file: ex294_repos
+        file: ex294_baseos
         baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+        enabled: yes
         gpgcheck: yes
         gpgkey:
-        enabled: yes
         state: present
  
     - name: AppStream configure
       ansible.builtin.yum_repository:
         name: AppStream
         description: EPEL YUM repo
-        file: ex294_repos
+        file: ex294_appstream
         baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+        enabled: yes
         gpgcheck: yes
         gpgkey:
-        enabled: yes
         state: present
