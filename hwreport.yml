@@ -1,0 +1,14 @@
+---
+- name: Generate hardware report
+  hosts: all
+  become: true
+  gather_facts: true
+
+
+tasks:
+  - name: Create hwreport file from template
+    ansible.builtin.template:
+      src: hwreport.j2
+      dest: /root/hwreport.txt
+
+
