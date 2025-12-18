@@ -1,5 +1,5 @@
 
-{% for i in groups.all %}
+{% for i in groups.dev %}
 {{ hostvars[i].ansible_default_ipv4.address }} {{ hostvars[i].ansible_fqdn }} {{ hostvars[i].ansible_hostname }}
 {% endfor %}
 
