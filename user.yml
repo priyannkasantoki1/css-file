@@ -1,11 +1,12 @@
 
 ---
 - name: create a user
-  hosts: all
+  hosts: dev,test
+  become: true
   vars_files:
     - vault.yml
     - user_list.yml
- 
+    
   tasks:
     - name: create a group
       ansible.builtin.group:
@@ -19,10 +20,18 @@
         password_expire_min: "{{ item.password_expire_days }}"
         group: dev1
         state: present
+      when: item.job == "manager"
       loop:
         "{{ user }}"
-      when: item.job == "manager" and (inventory_hostname in groups['dev'] or inventory_hostname in groups['test'])
- 
+   
+- name: create a user
+  hosts: prod
+  become: true
+  vars_files:
+    - vault.yml
+    - user_list.yml
+  tasks:
+  
     - name: create a group
       ansible.builtin.group:
         name: mgr1
@@ -35,7 +44,7 @@
         password_expire_min: "{{ item.password_expire_days }}"
         group: dev1
         state: present
+      when: item.job == "developer"
       loop:
         "{{ user }}"
-      when: item.job == "developer" and inventory_hostname in groups['prod']
  
