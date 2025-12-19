@@ -6,8 +6,8 @@
   - name: Cronjob for logger
     ansible.builtin.cron:
       name: happy
-      user: ansible
+      user: natasha
       minute: "*/2"
-      job: /usr/bin/logger "EX294 exam"
+      job: 'logger "EX294 exam"'
       state: present
 ...
