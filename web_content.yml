@@ -36,3 +36,6 @@
         src: /devweb
         dest: /var/www/html/devweb
         state: link
+
+        
+#semanage fcontext -l | grep /devweb
