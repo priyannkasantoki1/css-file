@@ -1,21 +1,19 @@
 ---
 - name: Install server
   ansible.builtin.dnf:
-    name: "{{ item }}"
+    name: "{{ pkgs }}"
     state: present
-  loop:
-     "{{ pkgs }}"
  
 - name: Start service httpd
   ansible.builtin.service:
-    name: "{{ web_svc }}"
+    name: "{{ pkgs }}"
     state: started
     enabled: true
  
 - name: Start service firewalld
   ansible.builtin.service:
     name: "{{ frw_svc }}"
-    state: started
+    state: restarted
     enabled: true
  
 - name: permission add trrafic in firewalld
@@ -35,10 +33,7 @@
 
 /apache/vars/main.yml
 ---
-pkgs:
-  - httpd
-  - firewalld
-web_svc: httpd
+pkgs: httpd
 frw_svc: firewalld
 rule: http
 doc: /var/www/html/index.html
