@@ -1,0 +1,27 @@
+---
+- name: create logical volume parPPon
+  hosts: all
+  tasks:
+    - debug:
+        msg: "Device is not present"
+      when: ansible_lvm.vgs.myvg is not defined
+
+    - lvol:
+        vg: myvg
+        lv: mylv
+        size: 1500m
+      when: ansible_lvm.vgs.myvg.free_g >= "1.6"
+
+    - debug:
+        msg: "Requested size not present"
+      when: ansible_lvm.vgs.myvg.free_g < "1.6"
+
+    - lvol:
+        vg: myvg
+        lv: mylv
+        size: 800m
+      when: ansible_lvm.vgs.myvg.free_g < "1.6"
+
+    - filesystem:
+        fstype: ext4
+        dev: /dev/myvg/mylv
