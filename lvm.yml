@@ -1,6 +1,7 @@
 ---
 - name: create a lvm
   hosts: all
+  become: true
   ignore_errros: true
  
   tasks:
