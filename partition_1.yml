@@ -7,32 +7,32 @@
   tasks:
     - name: vda missing notice
       ansible.builtin.debug:
-        msg: "Disk vda does not exist"
-      when: "'vda' not in ansible_devices"
+        msg: "Disk vdb does not exist"
+      when: "'vdb' not in ansible_devices"
 
     - name: Create 1500MiB partition if vda >= 1.5GB
       community.general.parted:
-        device: /dev/vda
+        device: /dev/vdb
         number: 1
         state: present
         part_end: 1500MiB
       when:
-        - "'vda' in ansible_devices"
-        - ansible_devices['vda'].size | regex_replace('GB','') | float >= 1.5
+        - "'vdb' in ansible_devices"
+        - ansible_devices['vdb'].size | regex_replace('GB','') | float >= 1.5
 
     - name: Create 800MiB partition if vda < 1.5GB
       community.general.parted:
-        device: /dev/vda
+        device: /dev/vdb
         number: 1
         state: present
         part_end: 800MiB
       when:
-        - "'vda' in ansible_devices"
-        - ansible_devices['vda'].size | regex_replace('GB','') | float < 1.5
+        - "'vdb' in ansible_devices"
+        - ansible_devices['vdb'].size | regex_replace('GB','') | float < 1.5
 
     - name: Create ext4 filesystem
       community.general.filesystem:
-        device: /dev/vda1
+        device: /dev/vdb1
         fstype: ext4
 
     - name: Create mount directory
@@ -40,9 +40,9 @@
         path: /newpart
         state: directory
 
-    - name: Mount vda1
+    - name: Mount vdb1
       ansible.posix.mount:
         path: /newpart
-        src: /dev/vda1
+        src: /dev/vdb1
         fstype: ext4
         state: mounted
