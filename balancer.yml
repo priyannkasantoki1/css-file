@@ -1,13 +1,13 @@
 ---           
 - name: configure role
-  hosts: balancer
+  hosts: webservers
   become: true
               
   roles:      
     - phpinfo
               
 - name: configure role phpinfo
-  hosts: webservers
+  hosts: balancer
   become: true
               
   roles:      
