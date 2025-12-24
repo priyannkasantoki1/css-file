@@ -5,29 +5,29 @@
   ignore_errros: true
  
   tasks:
+     - name: msg for vg
+      ansible.builtin.debug:
+        msg: "vg is not found"
+      when: ansible_lvm.vgs.research  is not defined
     - name: Create a logical volume
       community.general.lvol:
         vg: research
         lv: data
         size: 1500
-      when: ansible_lvm.vgs.research.free_g | float >= 1.5
- 
-    - name: msg for vg
-      ansible.builtin.debug:
-        msg: "vg is not found"
-      when: ansible_lvm.vgs.research  is not defined
+      when: ansible_lvm.vgs.research.free_g  >= "1.6"
  
     - name: msg for lv
       ansible.builtin.debug:
         msg: "insufficient space"
-      when: ansible_lvm.vgs.research.free_g | float < 1.5
+      when: ansible_lvm.vgs.research.free_g < "1.6"
  
     - name: create a logical volume
       community.general.lvol:
         vg: research
         lv: data
         size: 800
-      when: ansible_lvm.vgs.research.free_g | float < 1.5
+      when: ansible_lvm.vgs.research.free_g  < "1.6"
+      
     - name: formate the partition
       community.general.filesystem:
         fstype: ext4
