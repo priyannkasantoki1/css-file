@@ -1,5 +1,5 @@
-INVENTORY_HOSTNAME="{{ ansible_hostname | default('NONE') }}"
-BIOS_VERSION="{{ ansible_version | default('NONE') }}"
-TOTAL_MEMORY="{{ ansible_memtotal_mb | default('NONE') }}"
-VDA_SIZE="{{ ansible_devices.vda.size | default('NONE') }}"
-VDB_SIZE="{{ ansible_devices.vdb.size | default('NONE') }}"
+INVENTORY_HOSTNAME={{ ansible_hostname | default('NONE') }}
+BIOS_VERSION={{ ansible_version | default('NONE') }}
+TOTAL_MEMORY={{ ansible_memtotal_mb | default('NONE') }}
+VDA_SIZE={{ ansible_devices.vda.size | default('NONE') }}
+VDB_SIZE={{ ansible_devices.vdb.size | default('NONE') }}
