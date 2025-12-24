@@ -8,7 +8,7 @@
 tasks:
   - name: Create hwreport file from template
     ansible.builtin.template:
-      src: ./hwreport.j2
+      src: ./hwreport.empty
       dest: /root/hwreport.txt
 
 
