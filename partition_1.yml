@@ -1,48 +1,85 @@
 ---
-- name: partition
+- name: create a partision
   hosts: all
   become: true
   gather_facts: true
-
+ 
   tasks:
-    - name: vda missing notice
+    - name: msg
       ansible.builtin.debug:
-        msg: "Disk vdb does not exist"
-      when: "'vdb' not in ansible_devices"
-
-    - name: Create 1500MiB partition if vda >= 1.5GB
+        msg: "'sdc' in not present"
+      when: "'sdc' not in ansible_devices"
+    - name: partisiton
       community.general.parted:
-        device: /dev/vdb
+        device: /dev/sda
         number: 1
         state: present
         part_end: 1500MiB
       when:
-        - "'vdb' in ansible_devices"
-        - ansible_devices['vdb'].size | regex_replace('GB','') | float >= 1.5
-
-    - name: Create 800MiB partition if vda < 1.5GB
+        - "'sda' in ansible_devices"
+        - ansible_devices['sda'].size | regex_replace('GB','') | float >= 1.5
+ 
+    - name: partisiton
       community.general.parted:
-        device: /dev/vdb
+        device: /dev/sda
         number: 1
         state: present
         part_end: 800MiB
       when:
-        - "'vdb' in ansible_devices"
-        - ansible_devices['vdb'].size | regex_replace('GB','') | float < 1.5
-
-    - name: Create ext4 filesystem
+        - "'sda' in ansible_devices"
+        - ansible_devices['sda'].size | regex_replace('GB','') | float < 1.5
+ 
+    - name: partisiton
+      community.general.parted:
+        device: /dev/sdb
+        number: 1
+        state: present
+        part_end: 1500MiB
+      when:
+        - "'sdb' in ansible_devices"
+        - ansible_devices['sdb'].size | regex_replace('GB','') | float >= 1.5
+ 
+    - name: partisiton
+      community.general.parted:
+        device: /dev/sdb
+        number: 1
+        state: present
+        part_end: 800MiB
+      when:
+        - "'sdb' in ansible_devices"
+        - ansible_devices['sdb'].size | regex_replace('GB','') | float < 1.5
+ 
+    - name: filesystem
       community.general.filesystem:
-        device: /dev/vdb1
         fstype: ext4
-
-    - name: Create mount directory
+        dev: /dev/sda1
+        force: yes
+ 
+    - name: filesystem
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/sdb1
+        force: yes
+ 
+    - name: file
       ansible.builtin.file:
-        path: /newpart
+        path: "{{ item }}"
         state: directory
-
-    - name: Mount vdb1
+      loop:
+        - /bbz
+        - /bbz1
+ 
+    - name: mount is
       ansible.posix.mount:
-        path: /newpart
-        src: /dev/vdb1
+        path: /bbz
+        src: /dev/sda1
         fstype: ext4
         state: mounted
+ 
+    - name: mount is
+      ansible.posix.mount:
+        path: /bbz1
+        src: /dev/sdb1
+        fstype: ext4
+        state: mounted
+~                                                                                                   
